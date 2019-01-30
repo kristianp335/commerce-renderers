@@ -1,0 +1,12 @@
+Bundle-Name: com.liferay.commerce.kris.renderer
+Bundle-SymbolicName: com.liferay.commerce.kris.renderer
+Bundle-Version: 1.0.0
+Import-Package:\
+	!org.json,\
+	\
+	*
+Require-Capability:\
+	soy;\
+		filter:="(type=commerce-cart-taglib)"
+Web-ContextPath: /commerce-renderers
+-dsannotations-options: inherit
