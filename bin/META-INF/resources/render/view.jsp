@@ -25,10 +25,11 @@ CPSku cpSku = cpContentHelper.getDefaultCPSku(cpCatalogEntry);
 long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 %>
 
-<div class="container-fluid product-detail" id="<portlet:namespace /><%= cpDefinitionId %>ProductContent">
-	<div class="product-detail-header">
-		<h2 class="commerce-title"><%= cpCatalogEntry.getName() %></h2>
 
+
+<div class="container-fluid product-detail" id="<portlet:namespace /><%= cpDefinitionId %>ProductContent">
+		<div class="product-detail-header">
+		<h2 class="commerce-title"><%= cpCatalogEntry.getName() %></h2>
 		<div class="autofit-float autofit-row product-detail-secondary-info">
 			<div class="autofit-col">
 				<div class="commerce-sku">
@@ -61,12 +62,10 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 			<div class="product-detail-image-widget">
 				<div class="product-detail-thumbnail-column">
 
-					<%
-					List<CPAttachmentFileEntry> imagesCPAttachmentFileEntries = cpContentHelper.getImages(cpDefinitionId);
-
-					String[] imageOverflowUrls = new String[imagesCPAttachmentFileEntries.size()];
-
-					for (int i = 0; i < imagesCPAttachmentFileEntries.size(); i++) {
+					<%	
+						List<CPAttachmentFileEntry> imagesCPAttachmentFileEntries = cpContentHelper.getImages(cpDefinitionId);
+						String[] imageOverflowUrls = new String[imagesCPAttachmentFileEntries.size()];	
+						for (int i = 0; i < imagesCPAttachmentFileEntries.size(); i++) {
 						CPAttachmentFileEntry cpAttachmentFileEntry = imagesCPAttachmentFileEntries.get(i);
 
 						String url = cpContentHelper.getImageURL(cpAttachmentFileEntry.getFileEntry(), themeDisplay);
@@ -74,28 +73,17 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 						imageOverflowUrls = ArrayUtil.append(imageOverflowUrls, url);
 					%>
 
-						<c:choose>
-							<c:when test="<%= i > 2 %>">
-								<c:if test="<%= i == 3 %>">
-									<div class="product-detail-thumbnail-container product-detail-thumbnail-text-container" id="<portlet:namespace />thumbs-container">
-										<a class="thumb thumb-text" data-toggle="modal" href="#<portlet:namespace />ImageWidgetModal">
-											+ <%= imagesCPAttachmentFileEntries.size() - i %>
-										</a>
-									</div>
-								</c:if>
-							</c:when>
-							<c:otherwise>
-								<div class="product-detail-thumbnail-container" id="<portlet:namespace />thumbs-container">
-									<a class="thumb thumb-image" data-standard="<%= url %>" href="<%= url %>">
-										<img class="img-fluid" src="<%= url %>">
-									</a>
-								</div>
-							</c:otherwise>
-						</c:choose>
+						<div class="product-detail-thumbnail-container" id="<portlet:namespace />thumbs-container">									
+							<img class="img-fluid" src="<%= url %>" onclick="$('#<portlet:namespace />full-image').attr('src','<%= url %>'); $('#<portlet:namespace />zoom-image').attr('src','<%= url %>');">									
+						</div>
+
 
 					<%
 					}
 					%>
+					
+					
+  	
 
 				</div>
 
@@ -249,13 +237,11 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 			</div>
 		</c:if>
 	</div>
-
 	<%
 	List<CPDefinitionSpecificationOptionValue> cpDefinitionSpecificationOptionValues = cpContentHelper.getCPDefinitionSpecificationOptionValues(cpDefinitionId);
 	List<CPOptionCategory> cpOptionCategories = cpContentHelper.getCPOptionCategories(scopeGroupId);
 	List<CPAttachmentFileEntry> cpAttachmentFileEntries = cpContentHelper.getCPAttachmentFileEntries(cpDefinitionId);
 	%>
-
 	<div class="product-detail-description">
 		<ul class="nav nav-underline nav-underline-light" role="tablist">
 			<c:if test="<%= Validator.isNotNull(cpCatalogEntry.getDescription()) %>">
@@ -400,9 +386,8 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 				</div>
 			</div>
 		</c:if>
-	</div>
+	</div>	
 </div>
-
 <aui:script>
 	var zoomImage = document.getElementById('<portlet:namespace />zoom-image');
 
@@ -421,6 +406,8 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 	}
 
 	document.getElementById('<portlet:namespace />full-image').addEventListener('mousemove', detectMousePosition);
+	
+	
 </aui:script>
 
 <aui:script use="liferay-commerce-product-content">
@@ -437,3 +424,6 @@ long cpDefinitionId = cpCatalogEntry.getCPDefinitionId();
 
 	Liferay.component('<portlet:namespace /><%= cpDefinitionId %>ProductContent', productContent);
 </aui:script>
+
+
+
